@@ -1,0 +1,1 @@
+class CWidgetRemoteAccessSessions extends CWidget {}

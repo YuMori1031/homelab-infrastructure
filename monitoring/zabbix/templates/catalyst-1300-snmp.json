@@ -1,0 +1,397 @@
+{
+  "template": {
+    "templateid": "10004",
+    "host": "Template HomeLab Catalyst 1300 by SNMP",
+    "name": "Template HomeLab Catalyst 1300 by SNMP",
+    "description": "",
+    "status": "3"
+  },
+  "items": [
+    {
+      "itemid": "20000",
+      "name": "Catalyst CPU utilization (5 minutes)",
+      "key_": "catalyst.cpu.util[5m]",
+      "type": "20",
+      "value_type": "0",
+      "snmp_oid": "get[1.3.6.1.4.1.9.6.1.101.1.9.0]",
+      "delay": "5m",
+      "history": "31d",
+      "trends": "365d",
+      "status": "0",
+      "units": "%",
+      "description": "",
+      "master_itemid": "0"
+    },
+    {
+      "itemid": "20000",
+      "name": "Catalyst temperature MAC",
+      "key_": "catalyst.temperature[mac]",
+      "type": "20",
+      "value_type": "0",
+      "snmp_oid": "get[1.3.6.1.4.1.9.6.1.101.83.2.1.1.1.4.68420481]",
+      "delay": "5m",
+      "history": "31d",
+      "trends": "365d",
+      "status": "0",
+      "units": "C",
+      "description": "",
+      "master_itemid": "0"
+    },
+    {
+      "itemid": "20000",
+      "name": "Catalyst temperature PHY",
+      "key_": "catalyst.temperature[phy]",
+      "type": "20",
+      "value_type": "0",
+      "snmp_oid": "get[1.3.6.1.4.1.9.6.1.101.83.2.1.1.1.4.68420482]",
+      "delay": "5m",
+      "history": "31d",
+      "trends": "365d",
+      "status": "0",
+      "units": "C",
+      "description": "",
+      "master_itemid": "0"
+    },
+    {
+      "itemid": "20000",
+      "name": "Catalyst temperature DDR",
+      "key_": "catalyst.temperature[ddr]",
+      "type": "20",
+      "value_type": "0",
+      "snmp_oid": "get[1.3.6.1.4.1.9.6.1.101.83.2.1.1.1.4.68420483]",
+      "delay": "5m",
+      "history": "31d",
+      "trends": "365d",
+      "status": "0",
+      "units": "C",
+      "description": "",
+      "master_itemid": "0"
+    },
+    {
+      "itemid": "20000",
+      "name": "Catalyst temperature Air Inlet",
+      "key_": "catalyst.temperature[air_inlet]",
+      "type": "20",
+      "value_type": "0",
+      "snmp_oid": "get[1.3.6.1.4.1.9.6.1.101.83.2.1.1.1.4.68420484]",
+      "delay": "5m",
+      "history": "31d",
+      "trends": "365d",
+      "status": "0",
+      "units": "C",
+      "description": "",
+      "master_itemid": "0"
+    },
+    {
+      "itemid": "20000",
+      "name": "Catalyst power supply 1 status",
+      "key_": "catalyst.power.status[1]",
+      "type": "20",
+      "value_type": "3",
+      "snmp_oid": "get[1.3.6.1.4.1.9.6.1.101.83.1.2.1.3.67109185]",
+      "delay": "5m",
+      "history": "31d",
+      "trends": "365d",
+      "status": "0",
+      "units": "",
+      "description": "",
+      "master_itemid": "0"
+    },
+    {
+      "itemid": "20000",
+      "name": "Catalyst temperature MAC sensor status",
+      "key_": "catalyst.temperature.status[mac]",
+      "type": "20",
+      "value_type": "3",
+      "snmp_oid": "get[1.3.6.1.4.1.9.6.1.101.83.2.1.1.1.5.68420481]",
+      "delay": "5m",
+      "history": "30d",
+      "trends": "0",
+      "status": "0",
+      "units": "",
+      "description": "",
+      "master_itemid": "0"
+    },
+    {
+      "itemid": "20000",
+      "name": "Catalyst temperature PHY sensor status",
+      "key_": "catalyst.temperature.status[phy]",
+      "type": "20",
+      "value_type": "3",
+      "snmp_oid": "get[1.3.6.1.4.1.9.6.1.101.83.2.1.1.1.5.68420482]",
+      "delay": "5m",
+      "history": "30d",
+      "trends": "0",
+      "status": "0",
+      "units": "",
+      "description": "",
+      "master_itemid": "0"
+    },
+    {
+      "itemid": "20000",
+      "name": "Catalyst temperature DDR sensor status",
+      "key_": "catalyst.temperature.status[ddr]",
+      "type": "20",
+      "value_type": "3",
+      "snmp_oid": "get[1.3.6.1.4.1.9.6.1.101.83.2.1.1.1.5.68420483]",
+      "delay": "5m",
+      "history": "30d",
+      "trends": "0",
+      "status": "0",
+      "units": "",
+      "description": "",
+      "master_itemid": "0"
+    },
+    {
+      "itemid": "20000",
+      "name": "Catalyst temperature Air Inlet sensor status",
+      "key_": "catalyst.temperature.status[air_inlet]",
+      "type": "20",
+      "value_type": "3",
+      "snmp_oid": "get[1.3.6.1.4.1.9.6.1.101.83.2.1.1.1.5.68420484]",
+      "delay": "5m",
+      "history": "30d",
+      "trends": "0",
+      "status": "0",
+      "units": "",
+      "description": "",
+      "master_itemid": "0"
+    }
+  ],
+  "triggers": [
+    {
+      "triggerid": "20000",
+      "description": "Site Bスイッチ：MAC温度がWarning閾値を超えています",
+      "priority": "2",
+      "status": "0",
+      "expression": "{37053}>87",
+      "recovery_mode": "0",
+      "recovery_expression": "",
+      "manual_close": "0",
+      "dependencies": [],
+      "items": [
+        {
+          "itemid": "20000",
+          "name": "Catalyst temperature MAC",
+          "key_": "catalyst.temperature[mac]"
+        }
+      ]
+    },
+    {
+      "triggerid": "20000",
+      "description": "Site Bスイッチ：MAC温度がCritical閾値を超えています",
+      "priority": "4",
+      "status": "0",
+      "expression": "{37054}>92",
+      "recovery_mode": "0",
+      "recovery_expression": "",
+      "manual_close": "0",
+      "dependencies": [],
+      "items": [
+        {
+          "itemid": "20000",
+          "name": "Catalyst temperature MAC",
+          "key_": "catalyst.temperature[mac]"
+        }
+      ]
+    },
+    {
+      "triggerid": "20000",
+      "description": "Site Bスイッチ：PHY温度がWarning閾値を超えています",
+      "priority": "2",
+      "status": "0",
+      "expression": "{37055}>90",
+      "recovery_mode": "0",
+      "recovery_expression": "",
+      "manual_close": "0",
+      "dependencies": [],
+      "items": [
+        {
+          "itemid": "20000",
+          "name": "Catalyst temperature PHY",
+          "key_": "catalyst.temperature[phy]"
+        }
+      ]
+    },
+    {
+      "triggerid": "20000",
+      "description": "Site Bスイッチ：PHY温度がCritical閾値を超えています",
+      "priority": "4",
+      "status": "0",
+      "expression": "{37056}>95",
+      "recovery_mode": "0",
+      "recovery_expression": "",
+      "manual_close": "0",
+      "dependencies": [],
+      "items": [
+        {
+          "itemid": "20000",
+          "name": "Catalyst temperature PHY",
+          "key_": "catalyst.temperature[phy]"
+        }
+      ]
+    },
+    {
+      "triggerid": "20000",
+      "description": "Site Bスイッチ：DDR温度がWarning閾値を超えています",
+      "priority": "2",
+      "status": "0",
+      "expression": "{37057}>77",
+      "recovery_mode": "0",
+      "recovery_expression": "",
+      "manual_close": "0",
+      "dependencies": [],
+      "items": [
+        {
+          "itemid": "20000",
+          "name": "Catalyst temperature DDR",
+          "key_": "catalyst.temperature[ddr]"
+        }
+      ]
+    },
+    {
+      "triggerid": "20000",
+      "description": "Site Bスイッチ：DDR温度がCritical閾値を超えています",
+      "priority": "4",
+      "status": "0",
+      "expression": "{37058}>82",
+      "recovery_mode": "0",
+      "recovery_expression": "",
+      "manual_close": "0",
+      "dependencies": [],
+      "items": [
+        {
+          "itemid": "20000",
+          "name": "Catalyst temperature DDR",
+          "key_": "catalyst.temperature[ddr]"
+        }
+      ]
+    },
+    {
+      "triggerid": "20000",
+      "description": "Site Bスイッチ：Air Inlet温度がWarning閾値を超えています",
+      "priority": "2",
+      "status": "0",
+      "expression": "{37059}>72",
+      "recovery_mode": "0",
+      "recovery_expression": "",
+      "manual_close": "0",
+      "dependencies": [],
+      "items": [
+        {
+          "itemid": "20000",
+          "name": "Catalyst temperature Air Inlet",
+          "key_": "catalyst.temperature[air_inlet]"
+        }
+      ]
+    },
+    {
+      "triggerid": "20000",
+      "description": "Site Bスイッチ：Air Inlet温度がCritical閾値を超えています",
+      "priority": "4",
+      "status": "0",
+      "expression": "{37060}>77",
+      "recovery_mode": "0",
+      "recovery_expression": "",
+      "manual_close": "0",
+      "dependencies": [],
+      "items": [
+        {
+          "itemid": "20000",
+          "name": "Catalyst temperature Air Inlet",
+          "key_": "catalyst.temperature[air_inlet]"
+        }
+      ]
+    },
+    {
+      "triggerid": "20000",
+      "description": "Site Bスイッチ：電源状態に異常があります",
+      "priority": "4",
+      "status": "0",
+      "expression": "{37061}<>1",
+      "recovery_mode": "0",
+      "recovery_expression": "",
+      "manual_close": "0",
+      "dependencies": [],
+      "items": [
+        {
+          "itemid": "20000",
+          "name": "Catalyst power supply 1 status",
+          "key_": "catalyst.power.status[1]"
+        }
+      ]
+    },
+    {
+      "triggerid": "20000",
+      "description": "Site Bスイッチ：MAC温度センサーが利用できません",
+      "priority": "4",
+      "status": "0",
+      "expression": "{37071}<>1",
+      "recovery_mode": "0",
+      "recovery_expression": "",
+      "manual_close": "1",
+      "dependencies": [],
+      "items": [
+        {
+          "itemid": "20000",
+          "name": "Catalyst temperature MAC sensor status",
+          "key_": "catalyst.temperature.status[mac]"
+        }
+      ]
+    },
+    {
+      "triggerid": "20000",
+      "description": "Site Bスイッチ：PHY温度センサーが利用できません",
+      "priority": "4",
+      "status": "0",
+      "expression": "{37073}<>1",
+      "recovery_mode": "0",
+      "recovery_expression": "",
+      "manual_close": "1",
+      "dependencies": [],
+      "items": [
+        {
+          "itemid": "20000",
+          "name": "Catalyst temperature PHY sensor status",
+          "key_": "catalyst.temperature.status[phy]"
+        }
+      ]
+    },
+    {
+      "triggerid": "20000",
+      "description": "Site Bスイッチ：DDR温度センサーが利用できません",
+      "priority": "4",
+      "status": "0",
+      "expression": "{37075}<>1",
+      "recovery_mode": "0",
+      "recovery_expression": "",
+      "manual_close": "1",
+      "dependencies": [],
+      "items": [
+        {
+          "itemid": "20000",
+          "name": "Catalyst temperature DDR sensor status",
+          "key_": "catalyst.temperature.status[ddr]"
+        }
+      ]
+    },
+    {
+      "triggerid": "20000",
+      "description": "Site Bスイッチ：Air Inlet温度センサーが利用できません",
+      "priority": "4",
+      "status": "0",
+      "expression": "{37077}<>1",
+      "recovery_mode": "0",
+      "recovery_expression": "",
+      "manual_close": "1",
+      "dependencies": [],
+      "items": [
+        {
+          "itemid": "20000",
+          "name": "Catalyst temperature Air Inlet sensor status",
+          "key_": "catalyst.temperature.status[air_inlet]"
+        }
+      ]
+    }
+  ]
+}

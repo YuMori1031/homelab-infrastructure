@@ -1,0 +1,13 @@
+{
+  "manifest_version": 2.0,
+  "id": "vpn_connection_log",
+  "type": "widget",
+  "name": "VPN connection log",
+  "namespace": "VpnConnectionLog",
+  "version": "1.0",
+  "author": "HomeLab",
+  "description": "Displays sanitized VPN connection events.",
+  "widget": {"size": {"width": 21, "height": 10}, "js_class": "CWidgetVpnConnectionLog", "refresh_rate": 30},
+  "actions": {"widget.vpn_connection_log.view": {"class": "WidgetView"}},
+  "assets": {"js": ["class.widget.js"]}
+}

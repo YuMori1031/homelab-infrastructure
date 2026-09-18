@@ -1,0 +1,1 @@
+class CWidgetVpnConnectionLog extends CWidget {}

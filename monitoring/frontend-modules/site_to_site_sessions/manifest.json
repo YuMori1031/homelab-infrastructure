@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2.0,
+  "id": "site_to_site_sessions",
+  "type": "widget",
+  "name": "Site-to-Site VPN sessions",
+  "namespace": "SiteToSiteSessions",
+  "version": "1.0",
+  "author": "HomeLab",
+  "description": "Displays current Site-to-Site VPN status and session duration.",
+  "widget": {
+    "size": {"width": 21, "height": 4},
+    "js_class": "CWidgetSiteToSiteSessions",
+    "refresh_rate": 30
+  },
+  "actions": {
+    "widget.site_to_site_sessions.view": {"class": "WidgetView"}
+  },
+  "assets": {"js": ["class.widget.js"]}
+}

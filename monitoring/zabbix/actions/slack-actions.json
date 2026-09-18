@@ -1,0 +1,139 @@
+{
+  "actions": [
+    {
+      "actionid": "7",
+      "name": "HomeLab Slack - Immediate",
+      "status": "0",
+      "eventsource": "0",
+      "filter": {
+        "evaltype": "0",
+        "formula": "",
+        "eval_formula": "A",
+        "conditions": [
+          {
+            "conditiontype": "4",
+            "operator": "5",
+            "value": "3",
+            "value2": "",
+            "formulaid": "A"
+          }
+        ]
+      },
+      "operations": [
+        {
+          "operationid": "11",
+          "operationtype": "0",
+          "esc_period": "0",
+          "esc_step_from": "1",
+          "esc_step_to": "1",
+          "evaltype": "0",
+          "message": {
+            "default_msg": "1",
+            "mediatypeid": "62",
+            "custom_text_present": false,
+            "custom_subject_present": false
+          },
+          "recipients": {
+            "users": [
+              "3"
+            ],
+            "groups": []
+          }
+        }
+      ],
+      "recovery_operations": [
+        {
+          "operationid": "12",
+          "operationtype": "0",
+          "esc_period": null,
+          "esc_step_from": null,
+          "esc_step_to": null,
+          "evaltype": "0",
+          "message": {
+            "default_msg": "1",
+            "mediatypeid": "62",
+            "custom_text_present": false,
+            "custom_subject_present": false
+          },
+          "recipients": {
+            "users": [
+              "3"
+            ],
+            "groups": []
+          }
+        }
+      ]
+    },
+    {
+      "actionid": "8",
+      "name": "HomeLab Slack - Warning",
+      "status": "0",
+      "eventsource": "0",
+      "filter": {
+        "evaltype": "0",
+        "formula": "",
+        "eval_formula": "A",
+        "conditions": [
+          {
+            "conditiontype": "4",
+            "operator": "0",
+            "value": "2",
+            "value2": "",
+            "formulaid": "A"
+          }
+        ]
+      },
+      "operations": [
+        {
+          "operationid": "13",
+          "operationtype": "0",
+          "esc_period": "0",
+          "esc_step_from": "2",
+          "esc_step_to": "2",
+          "evaltype": "0",
+          "message": {
+            "default_msg": "1",
+            "mediatypeid": "62",
+            "custom_text_present": false,
+            "custom_subject_present": false
+          },
+          "recipients": {
+            "users": [
+              "3"
+            ],
+            "groups": []
+          }
+        }
+      ],
+      "recovery_operations": [
+        {
+          "operationid": "16",
+          "operationtype": "0",
+          "esc_period": null,
+          "esc_step_from": null,
+          "esc_step_to": null,
+          "evaltype": "0",
+          "message": {
+            "default_msg": "1",
+            "mediatypeid": "62",
+            "custom_text_present": false,
+            "custom_subject_present": false
+          },
+          "recipients": {
+            "users": [
+              "3"
+            ],
+            "groups": []
+          }
+        }
+      ]
+    }
+  ],
+  "media_type": {
+    "mediatypeid": "62",
+    "name": "Slack",
+    "type": "4",
+    "status": "0"
+  },
+  "secret_parameters": "external/redacted; values intentionally not exported"
+}

@@ -1,0 +1,103 @@
+{
+  "template": "Template HomeLab QNAP NAS by SNMP",
+  "purpose": "HomeLab QNAP storage and hardware monitoring; credentials are configured only on the host SNMP interface.",
+  "target": {
+    "vendor": "QNAP",
+    "model": "TS-469U",
+    "qts": "4.3.4.1652",
+    "enterprise_oid": "1.3.6.1.4.1.24681"
+  },
+  "polling": {
+    "health": "1m",
+    "temperature": "1m-5m",
+    "capacity": "5m-1h",
+    "static": "1h",
+    "discovery": "1h"
+  },
+  "macros": {
+    "{$QNAP.CPU.UTIL.WARN}": "90",
+    "{$QNAP.CPU.TEMP.WARN}": "65",
+    "{$QNAP.CPU.TEMP.HIGH}": "75",
+    "{$QNAP.SYSTEM.TEMP.WARN}": "55",
+    "{$QNAP.SYSTEM.TEMP.HIGH}": "65",
+    "{$QNAP.DISK.TEMP.WARN}": "45",
+    "{$QNAP.DISK.TEMP.HIGH}": "55",
+    "{$QNAP.VOLUME.USED.WARN}": "80",
+    "{$QNAP.VOLUME.USED.HIGH}": "90"
+  },
+  "system_oids": {
+    "cpu_usage_percent": "1.3.6.1.4.1.24681.1.3.1.0",
+    "memory_total_bytes": "1.3.6.1.4.1.24681.1.3.2.0",
+    "memory_free_bytes": "1.3.6.1.4.1.24681.1.3.3.0",
+    "uptime_ticks": "1.3.6.1.4.1.24681.1.3.4.0",
+    "cpu_temperature_celsius": "1.3.6.1.4.1.24681.1.3.5.0",
+    "system_temperature_celsius": "1.3.6.1.4.1.24681.1.3.6.0"
+  },
+  "lld": {
+    "enclosure": {
+      "index": "1.3.6.1.4.1.24681.1.4.1.1.1.1.1.2.1.1",
+      "columns": {"model": 3, "slot_count": 5, "name": 6, "temperature": 7}
+    },
+    "disk": {
+      "base": "1.3.6.1.4.1.24681.1.4.1.1.1.1.5.2.1",
+      "columns": {"id": 1, "enclosure_id": 2, "smart": 3, "summary": 4, "temperature": 6, "global_spare": 7, "model": 8, "capacity": 9}
+    },
+    "fan": {
+      "base": "1.3.6.1.4.1.24681.1.4.1.1.1.1.2.2.1",
+      "columns": {"id": 1, "enclosure_id": 2, "status": 4, "rpm": 5}
+    },
+    "raid": {
+      "base": "1.3.6.1.4.1.24681.1.4.1.1.1.2.1.2.1",
+      "columns": {"id": 1, "capacity": 3, "free": 4, "status": 5, "bitmap": 6, "level": 7}
+    },
+    "pool": {
+      "base": "1.3.6.1.4.1.24681.1.4.1.1.1.2.2.2.1",
+      "columns": {"id": 1, "capacity": 3, "free": 4, "status": 5}
+    },
+    "volume": {
+      "base": "1.3.6.1.4.1.24681.1.4.1.1.1.2.3.2.1",
+      "columns": {"id": 1, "capacity": 3, "free": 4, "status": 5, "ssd_cache": 6, "thin": 7, "name": 8},
+      "calculated": ["used_bytes", "used_percent"]
+    },
+    "disk_performance": {
+      "base": "1.3.6.1.4.1.24681.1.4.1.11.5.6.2.1",
+      "columns": {"id": 1, "block_volume_id": 2, "iops": 3, "latency": 4},
+      "latency_unit": null
+    }
+  },
+  "value_maps": {
+    "QNAP SMART status": {"-1": "Error", "0": "Good", "1": "Warning", "2": "Abnormal"},
+    "QNAP component status": {"-1": "Fail", "0": "OK"},
+    "QNAP pool status": {"-3": "Error", "-2": "Not ready", "-1": "Warning", "0": "Ready"},
+    "QNAP boolean": {"0": "No", "1": "Yes"}
+  },
+  "triggers": {
+    "system": [
+      {"name": "Site B QNAP NAS: CPU使用率が高い状態です", "severity": "Warning", "condition": "5m average above {$QNAP.CPU.UTIL.WARN}"},
+      {"name": "Site B QNAP NAS: CPU温度が高くなっています", "severity": "Warning", "condition": "5m minimum above {$QNAP.CPU.TEMP.WARN}", "depends_on": "CPU temperature High"},
+      {"name": "Site B QNAP NAS: CPU温度が重大しきい値を超えています", "severity": "High", "condition": "5m minimum above {$QNAP.CPU.TEMP.HIGH}"},
+      {"name": "Site B QNAP NAS: システム温度が高くなっています", "severity": "Warning", "condition": "5m minimum above {$QNAP.SYSTEM.TEMP.WARN}", "depends_on": "System temperature High"},
+      {"name": "Site B QNAP NAS: システム温度が重大しきい値を超えています", "severity": "High", "condition": "5m minimum above {$QNAP.SYSTEM.TEMP.HIGH}"}
+    ],
+    "prototypes": [
+      {"name": "QNAP Disk {#DISKID}: SMART警告", "severity": "Warning", "condition": "SMART status = 1"},
+      {"name": "QNAP Disk {#DISKID}: SMART異常", "severity": "High", "condition": "SMART status = 2 or -1"},
+      {"name": "QNAP Disk {#DISKID}: ディスク状態異常", "severity": "Average", "condition": "summary is not Good", "depends_on": "SMART warning and abnormal"},
+      {"name": "QNAP Disk {#DISKID}: ディスク温度が高くなっています", "severity": "Warning", "condition": "5m minimum above {$QNAP.DISK.TEMP.WARN}", "depends_on": "Disk temperature High"},
+      {"name": "QNAP Disk {#DISKID}: ディスク温度が重大しきい値を超えています", "severity": "High", "condition": "5m minimum above {$QNAP.DISK.TEMP.HIGH}"},
+      {"name": "QNAP FAN {#FANID}: ファン異常", "severity": "High", "condition": "component status = -1"},
+      {"name": "QNAP RAID {#RAIDID}: RAID状態異常", "severity": "High", "condition": "status is not Ready"},
+      {"name": "QNAP Pool {#POOLID}: ストレージプール警告", "severity": "Warning", "condition": "status = -1"},
+      {"name": "QNAP Pool {#POOLID}: ストレージプール異常", "severity": "High", "condition": "status = -2 or -3"},
+      {"name": "QNAP Volume {#VOLUMEID}: ボリューム状態異常", "severity": "High", "condition": "status is not Ready"},
+      {"name": "QNAP Volume {#VOLUMEID}: 空き容量低下", "severity": "Average", "condition": "15m minimum used percent above {$QNAP.VOLUME.USED.WARN}", "depends_on": "Volume capacity High"},
+      {"name": "QNAP Volume {#VOLUMEID}: 空き容量重大", "severity": "High", "condition": "15m minimum used percent above {$QNAP.VOLUME.USED.HIGH}"}
+    ]
+  },
+  "excluded": [
+    "Legacy formatted .1.2 values",
+    "QNAP network counters already monitored by IF-MIB",
+    "Power-supply alarms with ambiguous -1 values",
+    "mSATA, SSD-cache detail and iSCSI discovery when unused"
+  ]
+}
