@@ -1,6 +1,8 @@
-# AWS HomeLab Infrastructure
+# HomeLab Infrastructure
 
-A sanitized portfolio describing a multi-site HomeLab built around AWS, Terraform, strongSwan, PKI, Zabbix, SNMPv3, and automated failure notification.
+[日本語](README.md) | [English](README.en.md)
+
+AWSを現在の実装基盤として利用した、マルチサイトHomeLabの技術ポートフォリオです。Terraform、strongSwan、PKI、Zabbix、SNMPv3、障害通知を組み合わせ、再構築可能な監視基盤を構成しています。
 
 ## Architecture
 
@@ -15,65 +17,65 @@ flowchart LR
   Z -. monitors .-> B
 ```
 
-## What I Built
+## 構築内容
 
-An AWS-hosted VPN and monitoring platform connecting two sites and certificate-authenticated remote clients. The design includes reproducible infrastructure, operational monitoring, notification, and rebuild documentation.
+AWS上に配置したVPN・監視基盤で2つのサイトと証明書認証のRemote Access clientを接続しています。再現可能なInfrastructure as Code、運用監視、通知、再構築用ドキュメントを含みます。将来的な基盤移設を妨げないよう、公開artifactはprovider-neutralな構成で生成しています。
 
-## Key Technologies
+## 主要技術
 
-AWS, Terraform, strongSwan, Site-to-Site VPN, EAP-TLS, PKI/CA/CRL, Cisco Catalyst 1300, MikroTik, SNMPv3, Zabbix, Python, systemd, Zabbix Agent2, and GitHub.
+AWS、Terraform、strongSwan、Site-to-Site VPN、EAP-TLS、PKI/CA/CRL、Cisco Catalyst 1300、MikroTik、SNMPv3、Zabbix、Python、systemd、Zabbix Agent2、GitHub。
 
-## Design Goals
+## 設計目標
 
-- Secure remote access and multi-site connectivity
-- Infrastructure as code and secret separation
-- Failure detection, Slack notification, and recovery notification
-- Rebuildability from canonical source
+- 安全なRemote Accessとマルチサイト接続
+- Infrastructure as CodeとSecret分離
+- 障害検知、Slack通知、復旧通知
+- canonical sourceからの再構築
 
-## Network & VPN
+## Network / VPN
 
-The example topology uses AWS `10.10.0.0/24`, Site A `10.10.1.0/24`, Site B `10.10.2.0/24`, and Remote Access `10.10.255.0/24`. Remote Access uses `vpn.example.com` and a `10.10.0.0/16` local traffic selector in the example configuration.
+公開用example topologyでは、AWS segment `10.10.0.0/24`、Site A `10.10.1.0/24`、Site B `10.10.2.0/24`、Remote Access `10.10.255.0/24`を使用します。Remote Accessは `vpn.example.com`、local traffic selector `10.10.0.0/16`のexample設定です。
 
-## PKI & Remote Access
+## PKI / Remote Access
 
-The design uses a HomeLab CA, server and site certificates, client certificates, CRL generation, and certificate issue/revoke workflows. Private keys and credentials are excluded.
+HomeLab CA、server/site certificate、client certificate、CRL生成、証明書の発行・失効手順を扱います。秘密鍵とcredentialはartifactに含めません。
 
 ## Monitoring
 
-The monitoring design covers server OS health, VPN/collector state, router and switch telemetry, NAS health, and ICMP-only access points. The flow is `Item → Trigger → Problem → Action → Slack → Recovery`.
+Server OS、VPN/collector、router、switch、NAS、ICMP-only access pointを監視します。運用フローは `Item → Trigger → Problem → Action → Slack → Recovery` です。
 
 ## Custom Implementations
 
-- Python VICI VPN collector with freshness and event normalization
-- Catalyst 1300 temperature, sensor status, and power monitoring
-- Zabbix templates and frontend modules
-- Dashboard and Slack action definitions
-- systemd, Agent2, and logrotate integration
+- VICIから状態を取得しfreshnessとeventを正規化するPython VPN collector
+- Catalyst 1300のtemperature、sensor status、power監視
+- Zabbix templateとfrontend module
+- DashboardとSlack Action定義
+- systemd、Agent2、logrotate連携
 
 ## Infrastructure as Code
 
-Terraform provisions the monitoring subnet, routes, security groups, IAM, SSM documents, and fixed-AMI Zabbix EC2 design.
+Terraformでmonitoring subnet、route、security group、IAM、SSM document、固定AMI方式のZabbix EC2設計を管理します。
 
 ## Security Design
 
-Secrets are injected outside Git. The design uses least-privilege security groups, certificate authentication, allowlisted export, and fail-closed validation.
+SecretはGit外から注入します。least-privilegeなnetwork rule、certificate authentication、allowlist方式のexport、fail-closed validationを採用しています。
 
 ## Failure Detection
 
-`Item → Trigger → Problem → Action → Slack → Recovery` is validated as the operational notification chain.
+`Item → Trigger → Problem → Action → Slack → Recovery`を障害通知の基本チェーンとします。
 
 ## Rebuildability
 
-Canonical source, sanitized templates, collector code, systemd definitions, Terraform, and rebuild documentation are kept separately from runtime state and credentials.
+canonical source、sanitized template、collector、systemd定義、Terraform、rebuild documentationをruntime stateやcredentialから分離して管理します。
 
 ## Repository Structure
 
-See `docs/`, `terraform/`, `strongswan/`, and `monitoring/` in this generated artifact.
+生成artifact内の `docs/`、`terraform/`、`strongswan/`、`monitoring/`を参照してください。
 
 ## Sanitization Notice
 
-This repository is generated from a real private HomeLab as a sanitized portfolio. Real addresses, site names, FQDNs, AWS identifiers, credentials, and private keys are replaced or excluded.
+このrepositoryはPrivateなHomeLabから生成したsanitized portfolioです。実アドレス、実site名、FQDN、AWS identifier、credential、private keyは置換または除外しています。
 
-## What This Project Demonstrates
+## このプロジェクトで示していること
 
-This project demonstrates the integration of cloud networking, certificate-based VPN, infrastructure as code, device monitoring, custom automation, and operational documentation.
+Cloud networking、certificate-based VPN、Infrastructure as Code、device monitoring、custom automation、運用ドキュメントを一体化する実装例です。
