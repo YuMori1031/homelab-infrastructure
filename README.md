@@ -68,8 +68,64 @@ SecretはGit外から注入します。least-privilegeなnetwork rule、certific
 
 canonical source、sanitized template、collector、systemd定義、Terraform、rebuild documentationをruntime stateやcredentialから分離して管理します。
 
+## 設計判断の概要
+
+### VPN visibility
+
+Problem: 標準監視だけではVPN SA/sessionの可視性が不足します。
+Design: Python collectorでVICI状態を正規化し、Agent2経由でZabbixへ渡します。
+Implementation: collector、freshness/state Item、Dashboard、frontend moduleを組み合わせています。
+Operational Result: Site-to-SiteとRemote Accessの状態・履歴を監視フローへ接続できます。
+
+### Catalyst 1300 monitoring
+
+Problem: Generic SNMPだけではdevice-specific telemetryが不足します。
+Design: 実機応答を確認したSNMPv3 objectだけを採用します。
+Implementation: custom templateでtemperature、power、CPU telemetry、sensor stateを監視します。
+Operational Result: 未確認のmemory/fan metricは無理に作らず、設計上の例外として扱います。
+
+### End-to-end notification
+
+ItemからTrigger、Problem、Action、Slack、Recoveryまでを一つの運用チェーンとして確認します。
+
+## Design Decisions
+
+### VPN visibility
+
+Problem: Standard monitoring alone did not expose sufficient VPN SA/session visibility.
+Design: A Python collector normalizes VICI state and exposes it through Agent2.
+Implementation: Collector freshness/state Items, a dashboard, and frontend modules connect the data to Zabbix.
+Operational Result: Site-to-Site and Remote Access state and history participate in the monitoring flow.
+
+### Catalyst 1300 monitoring
+
+Problem: Generic SNMP did not expose enough device-specific telemetry.
+Design: Only SNMPv3 objects verified against the device are used.
+Implementation: A custom template monitors temperature, power, CPU telemetry, and sensor state.
+Operational Result: Unverified memory and fan metrics remain intentional design exceptions.
+
+### End-to-end notification
+
+The operational chain is verified as Item -> Trigger -> Problem -> Action -> Slack -> Recovery.
+
 ## Repository Structure
 
+- [Architecture](docs/architecture.md)
+- [VPN](docs/vpn.md)
+- [Monitoring](docs/monitoring.md)
+- [Security](docs/security.md)
+- [Rebuildability](docs/rebuildability.md)
+- [terraform/](terraform/)
+- [strongSwan/](strongswan/)
+- [monitoring/](monitoring/)
+- [Architecture](docs/architecture.md)
+- [VPN](docs/vpn.md)
+- [Monitoring](docs/monitoring.md)
+- [Security](docs/security.md)
+- [Rebuildability](docs/rebuildability.md)
+- [terraform/](terraform/)
+- [strongSwan/](strongswan/)
+- [monitoring/](monitoring/)
 生成artifact内の `docs/`、`terraform/`、`strongswan/`、`monitoring/`を参照してください。
 
 ## Sanitization Notice
@@ -78,4 +134,4 @@ canonical source、sanitized template、collector、systemd定義、Terraform、
 
 ## このプロジェクトで示していること
 
-Cloud networking、certificate-based VPN、Infrastructure as Code、device monitoring、custom automation、運用ドキュメントを一体化する実装例です。
+Multi-site VPN、Remote Access VPN、certificate-based authentication、PKI lifecycle、Terraform IaC、SNMPv3/Agent2/ICMP monitoring、Python collector、custom Zabbix template、frontend module、end-to-end notificationを一つのHomeLabとして設計・実装・運用する例です。公開artifact、runtime、secretを分離し、rebuild documentationまで整備しています。

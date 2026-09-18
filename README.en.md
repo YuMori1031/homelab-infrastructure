@@ -1,8 +1,8 @@
-# AWS HomeLab Infrastructure
+# HomeLab Infrastructure
 
 [日本語](README.md) | [English](README.en.md)
 
-A sanitized portfolio describing a multi-site HomeLab built around AWS, Terraform, strongSwan, PKI, Zabbix, SNMPv3, and automated failure notification.
+A multi-site HomeLab infrastructure portfolio currently hosted on AWS, integrating Terraform, strongSwan, PKI, Zabbix, SNMPv3, and automated failure notification.
 
 ## Architecture
 
@@ -78,4 +78,4 @@ This repository is generated from a real private HomeLab as a sanitized portfoli
 
 ## What This Project Demonstrates
 
-This project demonstrates the integration of cloud networking, certificate-based VPN, infrastructure as code, device monitoring, custom automation, and operational documentation.
+This project integrates multi-site and Remote Access VPN, certificate-based authentication, PKI lifecycle, Terraform IaC, SNMPv3/Agent2/ICMP monitoring, a Python collector, custom Zabbix templates and frontend modules, end-to-end notification, and rebuild documentation as one operational HomeLab. Public artifacts, runtime data, and secrets are deliberately separated.
