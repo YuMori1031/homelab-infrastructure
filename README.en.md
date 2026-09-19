@@ -2,7 +2,7 @@
 
 [日本語](README.md) | [English](README.en.md)
 
-A multi-site HomeLab infrastructure portfolio currently hosted on AWS, integrating Terraform, strongSwan, PKI, Zabbix, SNMPv3, and automated failure notification.
+A multi-site HomeLab infrastructure portfolio currently hosted on AWS. It integrates Terraform, strongSwan, PKI, Zabbix, SNMPv3, and failure notification while keeping the public design provider-neutral for a future platform move.
 
 ## Architecture
 
@@ -68,9 +68,32 @@ Secrets are injected outside Git. The design uses least-privilege security group
 
 Canonical source, sanitized templates, collector code, systemd definitions, Terraform, and rebuild documentation are kept separately from runtime state and credentials.
 
+## Design Decisions
+
+### VPN visibility
+
+Standard monitoring alone did not expose sufficient VPN SA/session visibility. A Python collector normalizes VICI state and exposes it through Agent2; freshness/state Items, a dashboard, and frontend modules connect Site-to-Site and Remote Access state and history to Zabbix.
+
+### Catalyst 1300 monitoring
+
+Generic SNMP did not expose enough device-specific telemetry. Only SNMPv3 objects verified against the device are used; a custom template monitors temperature, power, CPU telemetry, and sensor state, while unverified memory and fan metrics remain intentional non-monitoring decisions.
+
+### End-to-end notification
+
+The operational chain is verified from Item to Trigger, Problem, Action, Slack, and Recovery, including Problem and Recovery delivery paths.
+
 ## Repository Structure
 
-See `docs/`, `terraform/`, `strongswan/`, and `monitoring/` in this generated artifact.
+- [Architecture](docs/architecture.md)
+- [VPN](docs/vpn.md)
+- [Monitoring](docs/monitoring.md)
+- [Security](docs/security.md)
+- [Rebuildability](docs/rebuildability.md)
+- [terraform/](terraform/)
+- [strongSwan/](strongswan/)
+- [monitoring/](monitoring/)
+
+See the generated artifact's `docs/`, `terraform/`, `strongswan/`, and `monitoring/` directories for details.
 
 ## Sanitization Notice
 

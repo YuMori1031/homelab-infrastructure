@@ -2,7 +2,7 @@
 
 [日本語](README.md) | [English](README.en.md)
 
-AWSを現在の実装基盤として利用した、マルチサイトHomeLabの技術ポートフォリオです。Terraform、strongSwan、PKI、Zabbix、SNMPv3、障害通知を組み合わせ、再構築可能な監視基盤を構成しています。
+AWSを現在の実装基盤として利用している、マルチサイトHomeLabの技術ポートフォリオです。Terraform、strongSwan、PKI、Zabbix、SNMPv3、障害通知を統合し、将来の基盤移設を妨げないprovider-neutralな公開構成として整理しています。
 
 ## Architecture
 
@@ -19,7 +19,7 @@ flowchart LR
 
 ## 構築内容
 
-AWS上に配置したVPN・監視基盤で2つのサイトと証明書認証のRemote Access clientを接続しています。再現可能なInfrastructure as Code、運用監視、通知、再構築用ドキュメントを含みます。将来的な基盤移設を妨げないよう、公開artifactはprovider-neutralな構成で生成しています。
+AWS上に配置したVPN・監視基盤で2つのサイトと証明書認証のRemote Access clientを接続しています。再現可能なInfrastructure as Code、運用監視、通知、再構築用ドキュメントを含みます。
 
 ## 主要技術
 
@@ -72,41 +72,15 @@ canonical source、sanitized template、collector、systemd定義、Terraform、
 
 ### VPN visibility
 
-Problem: 標準監視だけではVPN SA/sessionの可視性が不足します。
-Design: Python collectorでVICI状態を正規化し、Agent2経由でZabbixへ渡します。
-Implementation: collector、freshness/state Item、Dashboard、frontend moduleを組み合わせています。
-Operational Result: Site-to-SiteとRemote Accessの状態・履歴を監視フローへ接続できます。
+標準監視だけではVPN SA/sessionの可視性が不足するため、Python collectorでVICI状態を正規化し、Agent2経由でZabbixへ渡します。collector freshness/state Item、Dashboard、frontend moduleを組み合わせ、Site-to-SiteとRemote Accessの状態・履歴を監視フローへ接続します。
 
 ### Catalyst 1300 monitoring
 
-Problem: Generic SNMPだけではdevice-specific telemetryが不足します。
-Design: 実機応答を確認したSNMPv3 objectだけを採用します。
-Implementation: custom templateでtemperature、power、CPU telemetry、sensor stateを監視します。
-Operational Result: 未確認のmemory/fan metricは無理に作らず、設計上の例外として扱います。
+Generic SNMPだけではdevice-specific telemetryが不足するため、実機応答を確認したSNMPv3 objectだけを採用します。custom templateでtemperature、power、CPU telemetry、sensor stateを監視し、未確認のmemory/fan metricは意図的な非監視として扱います。
 
 ### End-to-end notification
 
-ItemからTrigger、Problem、Action、Slack、Recoveryまでを一つの運用チェーンとして確認します。
-
-## Design Decisions
-
-### VPN visibility
-
-Problem: Standard monitoring alone did not expose sufficient VPN SA/session visibility.
-Design: A Python collector normalizes VICI state and exposes it through Agent2.
-Implementation: Collector freshness/state Items, a dashboard, and frontend modules connect the data to Zabbix.
-Operational Result: Site-to-Site and Remote Access state and history participate in the monitoring flow.
-
-### Catalyst 1300 monitoring
-
-Problem: Generic SNMP did not expose enough device-specific telemetry.
-Design: Only SNMPv3 objects verified against the device are used.
-Implementation: A custom template monitors temperature, power, CPU telemetry, and sensor state.
-Operational Result: Unverified memory and fan metrics remain intentional design exceptions.
-
-### End-to-end notification
-
-The operational chain is verified as Item -> Trigger -> Problem -> Action -> Slack -> Recovery.
+ItemからTrigger、Problem、Action、Slack、Recoveryまでを一つの運用チェーンとして確認し、ProblemとRecoveryの通知経路を検証します。
 
 ## Repository Structure
 
@@ -118,14 +92,7 @@ The operational chain is verified as Item -> Trigger -> Problem -> Action -> Sla
 - [terraform/](terraform/)
 - [strongSwan/](strongswan/)
 - [monitoring/](monitoring/)
-- [Architecture](docs/architecture.md)
-- [VPN](docs/vpn.md)
-- [Monitoring](docs/monitoring.md)
-- [Security](docs/security.md)
-- [Rebuildability](docs/rebuildability.md)
-- [terraform/](terraform/)
-- [strongSwan/](strongswan/)
-- [monitoring/](monitoring/)
+
 生成artifact内の `docs/`、`terraform/`、`strongswan/`、`monitoring/`を参照してください。
 
 ## Sanitization Notice
