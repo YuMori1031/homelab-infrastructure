@@ -1,5 +1,5 @@
-/opt/homelab/example
-/opt/homelab/example {
+/var/log/homelab-vpn-monitor/site-to-site-events.log
+/var/log/homelab-vpn-monitor/remote-access-events.log {
     daily
     rotate 30
     missingok

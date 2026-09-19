@@ -1,14 +1,14 @@
-#!/opt/homelab/example
+#!/usr/bin/python3
 import json,os,re,subprocess,tempfile,time
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
-OUT=Path('/opt/homelab/example')
-STATE=Path('/opt/homelab/example')
-SITE_STATE=Path('/opt/homelab/example')
-SITE_EVENT_STATE=Path('/opt/homelab/example')
-REMOTE_EVENT_STATE=Path('/opt/homelab/example')
-SITE_EVENT_LOG=Path('/opt/homelab/example')
-REMOTE_EVENT_LOG=Path('/opt/homelab/example')
+OUT=Path('/var/lib/homelab-vpn-monitor/status.json')
+STATE=Path('/var/lib/homelab-vpn-monitor/remote-access-state.json')
+SITE_STATE=Path('/var/lib/homelab-vpn-monitor/site-to-site-state.json')
+SITE_EVENT_STATE=Path('/var/lib/homelab-vpn-monitor/site-to-site-event-state.json')
+REMOTE_EVENT_STATE=Path('/var/lib/homelab-vpn-monitor/remote-access-event-state.json')
+SITE_EVENT_LOG=Path('/var/log/homelab-vpn-monitor/site-to-site-events.log')
+REMOTE_EVENT_LOG=Path('/var/log/homelab-vpn-monitor/remote-access-events.log')
 EVENT_TZ=timezone(timedelta(hours=9))
 REQUIRED={'site_a':('site_a-site',{'site_a-aws','site_a-site_b','site_a-remote-access'}),'site_b':('site_b-site',{'site_b-aws','site_b-site_a','site_b-remote-access'})}
 def collect(text):
@@ -303,7 +303,7 @@ def record_remote_events(remote):
 
 def main():
  try:
-  result=subprocess.run(['/opt/homelab/example','--list-sas'],capture_output=True,text=True,timeout=15,check=True)
+  result=subprocess.run(['/usr/sbin/swanctl','--list-sas'],capture_output=True,text=True,timeout=15,check=True)
   sites=add_site_times(collect(result.stdout))
   record_site_events(sites)
  except Exception:

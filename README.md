@@ -2,7 +2,7 @@
 
 [日本語](README.md) | [English](README.en.md)
 
-AWSを現在の実装基盤として利用した、マルチサイトHomeLabの技術ポートフォリオです。Terraform、strongSwan、PKI、Zabbix、SNMPv3、障害通知を組み合わせ、再構築可能な監視基盤を構成しています。
+AWSを現在の実装基盤として利用している、マルチサイトHomeLabの技術ポートフォリオです。Terraform、strongSwan、PKI、Zabbix、SNMPv3、障害通知を統合し、将来の基盤移設を妨げないprovider-neutralな公開構成として整理しています。
 
 ## Architecture
 
@@ -19,7 +19,7 @@ flowchart LR
 
 ## 構築内容
 
-AWS上に配置したVPN・監視基盤で2つのサイトと証明書認証のRemote Access clientを接続しています。再現可能なInfrastructure as Code、運用監視、通知、再構築用ドキュメントを含みます。将来的な基盤移設を妨げないよう、公開artifactはprovider-neutralな構成で生成しています。
+AWS上に配置したVPN・監視基盤で2つのサイトと証明書認証のRemote Access clientを接続しています。再現可能なInfrastructure as Code、運用監視、通知、再構築用ドキュメントを含みます。
 
 ## 主要技術
 
@@ -68,7 +68,30 @@ SecretはGit外から注入します。least-privilegeなnetwork rule、certific
 
 canonical source、sanitized template、collector、systemd定義、Terraform、rebuild documentationをruntime stateやcredentialから分離して管理します。
 
+## 設計判断の概要
+
+### VPN visibility
+
+標準監視だけではVPN SA/sessionの可視性が不足するため、Python collectorでVICI状態を正規化し、Agent2経由でZabbixへ渡します。collector freshness/state Item、Dashboard、frontend moduleを組み合わせ、Site-to-SiteとRemote Accessの状態・履歴を監視フローへ接続します。
+
+### Catalyst 1300 monitoring
+
+Generic SNMPだけではdevice-specific telemetryが不足するため、実機応答を確認したSNMPv3 objectだけを採用します。custom templateでtemperature、power、CPU telemetry、sensor stateを監視し、未確認のmemory/fan metricは意図的な非監視として扱います。
+
+### End-to-end notification
+
+ItemからTrigger、Problem、Action、Slack、Recoveryまでを一つの運用チェーンとして確認し、ProblemとRecoveryの通知経路を検証します。
+
 ## Repository Structure
+
+- [Architecture](docs/architecture.md)
+- [VPN](docs/vpn.md)
+- [Monitoring](docs/monitoring.md)
+- [Security](docs/security.md)
+- [Rebuildability](docs/rebuildability.md)
+- [terraform/](terraform/)
+- [strongSwan/](strongswan/)
+- [monitoring/](monitoring/)
 
 生成artifact内の `docs/`、`terraform/`、`strongswan/`、`monitoring/`を参照してください。
 
@@ -78,4 +101,4 @@ canonical source、sanitized template、collector、systemd定義、Terraform、
 
 ## このプロジェクトで示していること
 
-Cloud networking、certificate-based VPN、Infrastructure as Code、device monitoring、custom automation、運用ドキュメントを一体化する実装例です。
+Multi-site VPN、Remote Access VPN、certificate-based authentication、PKI lifecycle、Terraform IaC、SNMPv3/Agent2/ICMP monitoring、Python collector、custom Zabbix template、frontend module、end-to-end notificationを一つのHomeLabとして設計・実装・運用する例です。公開artifact、runtime、secretを分離し、rebuild documentationまで整備しています。
